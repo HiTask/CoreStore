@@ -49,7 +49,7 @@ class Dog: Animal {
     let nickname = Value.Optional<String>("nickname")
 
 
-    @ValueContainer<Dog>.Required("age", initial: 1)
+    @VV.Required("age", initial: 1)
     var age: Int
 
     let friends = Relationship.ToManyOrdered<Dog>("friends")
@@ -177,14 +177,11 @@ class DynamicModelTests: BaseTestDataTestCase {
                     XCTAssertEqual(dog.nickname.value, nil)
                     XCTAssertEqual(dog.age, 1)
 
-                    #if swift(>=5.1)
-
                     let dogKeyPathBuilder = Dog.keyPathBuilder()
-                    XCTAssertEqual(dogKeyPathBuilder.species.keyPathString, "SELF.species")
-                    XCTAssertEqual(dogKeyPathBuilder.master.title.keyPathString, "SELF.master.title")
-                    XCTAssertEqual(dogKeyPathBuilder.master.spouse.pets.color.keyPathString, "SELF.master.spouse.pets.color")
-
-                    #endif
+                    XCTAssertEqual(dogKeyPathBuilder.keyPathString, "SELF")
+                    XCTAssertEqual(dogKeyPathBuilder.species.keyPathString, "species")
+                    XCTAssertEqual(dogKeyPathBuilder.master.title.keyPathString, "master.title")
+                    XCTAssertEqual(dogKeyPathBuilder.master.spouse.pets.color.keyPathString, "master.spouse.pets.color")
 
                     let didSetObserver = dog.species.observe(options: [.new, .old]) { (object, change) in
 

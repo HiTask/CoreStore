@@ -64,9 +64,9 @@ extension DynamicObject {
 
     // MARK: Internal
     
-    internal static func keyPathBuilder() -> DynamicObjectMeta<Never, Self> {
+    internal static func keyPathBuilder() -> DynamicObjectMeta<Self, Never, Self> {
 
-        return .init(keyPathString: "SELF")
+        return .init(root: ())
     }
     
     internal func runtimeType() -> Self.Type {

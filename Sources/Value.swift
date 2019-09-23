@@ -123,7 +123,7 @@ public enum ValueContainer<O: CoreStoreObject> {
 
             self.init(
                 wrappedValue: initial(),
-                field: keyPath,
+                keyPath,
                 isTransient: isTransient,
                 versionHashModifier: versionHashModifier(),
                 renamingIdentifier: renamingIdentifier(),
@@ -134,8 +134,8 @@ public enum ValueContainer<O: CoreStoreObject> {
         }
 
         public init(
-            wrappedValue: @autoclosure @escaping () -> V,
-            field keyPath: KeyPathString,
+            wrappedValue initialValue: @autoclosure @escaping () -> V,
+            _ keyPath: KeyPathString,
             isTransient: Bool = false,
             versionHashModifier: @autoclosure @escaping () -> String? = nil,
             renamingIdentifier: @autoclosure @escaping () -> String? = nil,
@@ -145,7 +145,7 @@ public enum ValueContainer<O: CoreStoreObject> {
 
             self.keyPath = keyPath
             self.isTransient = isTransient
-            self.defaultValue = { wrappedValue().cs_toQueryableNativeType() }
+            self.defaultValue = { initialValue().cs_toQueryableNativeType() }
             self.versionHashModifier = versionHashModifier
             self.renamingIdentifier = renamingIdentifier
             self.customGetter = customGetter
